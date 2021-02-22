@@ -9,6 +9,9 @@ DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/utils.js');
 var Candidate = OpenCodeLib('x-local://spxml_web/portal/estaff-cabinet_test/candidate2.js');
 DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/candidate2.js');
 
+var Comment = OpenCodeLib('x-local://spxml_web/portal/estaff-cabinet_test/comment.js');
+DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/comment.js');
+
 var Connection = OpenCodeLib('x-local://spxml_web/portal/estaff-cabinet_test/connection2.js');
 DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/connection2.js');
 
@@ -145,6 +148,67 @@ function get_VacancyAttachment(queryObjects) {
 	} catch(e){
 		return Utils.setError(e);
 	}
+}
+
+function get_Comments(queryObjects) {
+	var personId = queryObjects.GetOptProperty('person_id');
+	var candidateId = queryObjects.GetOptProperty('candidate_id');
+	var vacancyId = queryObjects.GetOptProperty('vacancy_id');
+
+	if (candidateId == undefined || vacancyId == undefined) {
+		return Utils.setError('Неверное количество аргументов');
+	}
+
+	var commentList = Comment.list(Session.adoConnection4, candidateId, vacancyId, personId);
+	return Utils.setSuccess(commentList);
+}
+
+function post_Comments(queryObjects) {
+	var personId = queryObjects.GetOptProperty('person_id');
+	var candidateId = queryObjects.GetOptProperty('candidate_id');
+	var vacancyId = queryObjects.GetOptProperty('vacancy_id');
+	var commentId = queryObjects.GetOptProperty('id');
+	var data = DecodeJson(queryObjects.Body);
+	//ar data1 = ParseJson(queryObjects.Body);
+
+	//alert('data: ' + EncodeJson(data));
+	//alert('data1: ' + EncodeJson(data1));
+	var comment = data.GetOptProperty('comment');
+	
+	//alert('post_Comments_1');
+	if (candidateId == undefined || vacancyId == undefined || comment == undefined || Trim(comment) == '') {
+		//alert('post_Comments_2');
+		return Utils.setError('Неверное количество аргументов');
+	}
+
+	//alert('post_Comments_3');
+	if (commentId != undefined) {
+		//update
+		//alert('post_Comments_4');
+		var ucomment = Comment.update(Session.adoConnection4, commentId, { comment: comment }, personId);
+		return Utils.setSuccess(ucomment);
+	}
+
+	//add
+	if (personId == undefined) {
+		//alert('post_Comments_5');
+		return Utils.setError('Неверное количество аргументов');
+	}
+
+	//alert('post_Comments_6');
+	var ncomment = Comment.add(Session.adoConnection4, comment, candidateId, vacancyId, personId);
+	return Utils.setSuccess(ncomment);
+}
+
+function delete_Comments(queryObjects) {
+	var id = queryObjects.GetOptProperty('id');
+	
+	if (id == undefined) {
+		return Utils.setError('Неверное количество аргументов');
+	}
+
+	Comment.remove(Session.adoConnection4, id);
+	return Utils.setSuccess({});
 }
 
 %>

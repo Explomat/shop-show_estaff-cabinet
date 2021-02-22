@@ -126,7 +126,7 @@ function getById(connect, id, vacancyId) {
         // получаем вакансии по кандидату
         var vqs = " \n\
             select \n\
-                vs.id, \n\
+                cast(vs.id as varchar(20)) id, \n\
                 vs.name, \n\
                 vs.start_date \n\
             from ( \n\
