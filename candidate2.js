@@ -1,6 +1,7 @@
 function _getEvents(connect, candidateId, vacancyId) {
-    var Connection = OpenCodeLib('./connection2.js');
-    DropFormsCache('./connection2.js');
+    DropFormsCache('./connection.js');
+    var Connection = OpenCodeLib('./connection.js');
+    
 
     var ceq = " \n\
         select \n\
@@ -8,29 +9,32 @@ function _getEvents(connect, candidateId, vacancyId) {
             cast(evs.candidate_id as varchar(20)) candidate_id, \n\
             evs.[type_id], \n\
             ets.name [type_name], \n\
+            ets.text_color, \n\
             evs.date, \n\
             evs.end_date, \n\
             evs.occurrence_id, \n\
             T.p.query('occurrence/id[text() = sql:column(\"evs.occurrence_id\")]/../name').value('.', 'varchar(50)') occurrence_name, \n\
-            T.p.query('occurrence/id[text() = sql:column(\"evs.occurrence_id\")]/../state_name').value('.', 'varchar(50)') occurrence_state_name \n\
-        from [events] evs \n\
+            T.p.query('occurrence/id[text() = sql:column(\"evs.occurrence_id\")]/../state_name').value('.', 'varchar(50)') occurrence_state_name, \n\
+            evs.comment \n\
+            from [events] evs \n\
         left join event_types ets on ets.id = evs.[type_id] \n\
         cross apply ets.occurrences.nodes('/occurrences') as T(p) \n\
         where \n\
             evs.vacancy_id = " + vacancyId + " \n\
             and evs.candidate_id = " + candidateId + " \n\
-        order by evs.date desc \n\
+        order by evs.date asc \n\
     ";
 
     return Connection.execute(ceq, connect);
 }
 
 function getById(connect, id, vacancyId) {
-    var Connection = OpenCodeLib('./connection2.js');
-    DropFormsCache('./connection2.js');
-
-    var Utils = OpenCodeLib('./utils.js');
+    DropFormsCache('./connection.js');
+    var Connection = OpenCodeLib('./connection.js');
+    
     DropFormsCache('./utils.js');
+    var Utils = OpenCodeLib('./utils.js');
+    
 
     var clq = " \n\
         select \n\
@@ -159,8 +163,9 @@ function list(
     sort,
     sortDirection
 ) {
-    var Connection = OpenCodeLib('./connection2.js');
-    DropFormsCache('./connection2.js');
+    DropFormsCache('./connection.js');
+    var Connection = OpenCodeLib('./connection.js');
+   
 
     var clq = " \n\
         SET NOCOUNT ON; \n\
@@ -262,8 +267,9 @@ function list(
 }
 
 function getFinalCandidates(connect, vacancyId, candidateIds) {
-    var Connection = OpenCodeLib('./connection2.js');
-    DropFormsCache('./connection2.js');
+    DropFormsCache('./connection.js');
+    var Connection = OpenCodeLib('./connection.js');
+    
 
     if (candidateIds.length == 0) {
         return [];
@@ -290,11 +296,12 @@ function getFinalCandidates(connect, vacancyId, candidateIds) {
 }
 
 function getAttachment(connect, id, attachmentId) {
-    var Connection = OpenCodeLib('./connection2.js');
-    DropFormsCache('./connection2.js');
-
-    var Utils = OpenCodeLib('./utils.js');
+    DropFormsCache('./connection.js');
+    var Connection = OpenCodeLib('./connection.js');
+    
     DropFormsCache('./utils.js');
+    var Utils = OpenCodeLib('./utils.js');
+    
 
     var candidateQuery = " \n\
 		select c.attachments \n\

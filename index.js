@@ -1,19 +1,23 @@
 <%
 
-var Vacancy = OpenCodeLib('x-local://spxml_web/portal/estaff-cabinet_test/vacancy.js');
-DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/vacancy.js');
+var isProd = false;
+var projectName = (isProd ? 'estaff-cabinet' : 'estaff-cabinet_test');
 
-var Utils = OpenCodeLib('x-local://spxml_web/portal/estaff-cabinet_test/utils.js');
-DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/utils.js');
+DropFormsCache('x-local://spxml_web/portal/' + projectName + '/vacancy.js');
+var Vacancy = OpenCodeLib('x-local://spxml_web/portal/' + projectName + '/vacancy.js');
 
-var Candidate = OpenCodeLib('x-local://spxml_web/portal/estaff-cabinet_test/candidate2.js');
-DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/candidate2.js');
+DropFormsCache('x-local://spxml_web/portal/' + projectName + '/utils.js');
+var Utils = OpenCodeLib('x-local://spxml_web/portal/' + projectName + '/utils.js');
 
-var Comment = OpenCodeLib('x-local://spxml_web/portal/estaff-cabinet_test/comment.js');
-DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/comment.js');
+DropFormsCache('x-local://spxml_web/portal/' + projectName + '/candidate.js');
+var Candidate = OpenCodeLib('x-local://spxml_web/portal/' + projectName + '/candidate.js');
 
-var Connection = OpenCodeLib('x-local://spxml_web/portal/estaff-cabinet_test/connection2.js');
-DropFormsCache('x-local://spxml_web/portal/estaff-cabinet_test/connection2.js');
+DropFormsCache('x-local://spxml_web/portal/' + projectName + '/comment.js');
+var Comment = OpenCodeLib('x-local://spxml_web/portal/' + projectName + '/comment.js');
+
+DropFormsCache('x-local://spxml_web/portal/' + projectName + '/connection.js');
+var Connection = OpenCodeLib('x-local://spxml_web/portal/' + projectName + '/connection.js');
+
 
 Session.adoConnection4 = null;
 /*try {
@@ -185,6 +189,7 @@ function post_Comments(queryObjects) {
 	if (commentId != undefined) {
 		//update
 		//alert('post_Comments_4');
+		comment = DecodeCharset(comment, 'utf-8');
 		var ucomment = Comment.update(Session.adoConnection4, commentId, { comment: comment }, personId);
 		return Utils.setSuccess(ucomment);
 	}
@@ -196,6 +201,7 @@ function post_Comments(queryObjects) {
 	}
 
 	//alert('post_Comments_6');
+	comment = DecodeCharset(comment, 'utf-8');
 	var ncomment = Comment.add(Session.adoConnection4, comment, candidateId, vacancyId, personId);
 	return Utils.setSuccess(ncomment);
 }

@@ -1,6 +1,7 @@
 ﻿function getStatistics(connect, id) {
-	var Connection = OpenCodeLib('./connection2.js');
-	DropFormsCache('./connection2.js');
+	DropFormsCache('./connection.js');
+	var Connection = OpenCodeLib('./connection.js');
+	
 
 	var sq = " \n\
 		select \n\
@@ -263,8 +264,9 @@
 }
 
 function getStates(connect) {
-	var Connection = OpenCodeLib('./connection2.js');
-	DropFormsCache('./connection2.js');
+	DropFormsCache('./connection.js');
+	var Connection = OpenCodeLib('./connection.js');
+	
 
 	var sq = " \n\
 		select \n\
@@ -278,14 +280,15 @@ function getStates(connect) {
 }
 
 function getById(connect, id) {
-	var Connection = OpenCodeLib('./connection2.js');
-	DropFormsCache('./connection2.js');
-
-	var Candidate = OpenCodeLib('./candidate2.js');
-	DropFormsCache('./candidate2.js');
-
-	var Utils = OpenCodeLib('./utils.js');
+	DropFormsCache('./connection.js');
+	var Connection = OpenCodeLib('./connection.js');
+	
+	DropFormsCache('./candidate.js');
+	var Candidate = OpenCodeLib('./candidate.js');
+	
 	DropFormsCache('./utils.js');
+	var Utils = OpenCodeLib('./utils.js');
+	
 
 	var vq = "\n\
 		select \n\
@@ -410,8 +413,9 @@ function list(
 	sort,
 	sortDirection
 ) {
-	var Connection = OpenCodeLib('./connection2.js');
-	DropFormsCache('./connection2.js');
+	DropFormsCache('./connection.js');
+	var Connection = OpenCodeLib('./connection.js');
+	
 
 	var vlq = " \n\
 		SET NOCOUNT ON; \n\
@@ -549,11 +553,12 @@ function list(
 }
 
 function getAttachment(connect, id, attachmentId) {
-	var Connection = OpenCodeLib('./connection2.js');
-	DropFormsCache('./connection2.js');
-
-	var Utils = OpenCodeLib('./utils.js');
+	DropFormsCache('./connection.js');
+	var Connection = OpenCodeLib('./connection.js');
+	
 	DropFormsCache('./utils.js');
+	var Utils = OpenCodeLib('./utils.js');
+	
 
 	var vacancyQuery = " \n\
 		select vs.attachments \n\

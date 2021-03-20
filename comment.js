@@ -1,7 +1,8 @@
 
 function add(connect, comment, candidateId, vacancyId, personId) {
-    var Settings = OpenCodeLib('./settings.js');
     DropFormsCache('./settings.js');
+    var Settings = OpenCodeLib('./settings.js');
+    
 
     var settings = Settings.get();
     var commentType = settings.comment_type_id;
@@ -46,8 +47,9 @@ function remove(connect, id) {
 }
 
 function getObjectById(connect, id, personId) {
-    var Connection = OpenCodeLib('./connection2.js');
-    DropFormsCache('./connection2.js');
+    DropFormsCache('./connection.js');
+    var Connection = OpenCodeLib('./connection.js');
+    
 
     personId = personId == undefined ? 0 : personId;
 
@@ -57,6 +59,7 @@ function getObjectById(connect, id, personId) {
             cast(evs.candidate_id as varchar(20)) candidate_id, \n\
             evs.[type_id], \n\
             ets.name [type_name], \n\
+            ets.text_color, \n\
             evs.date, \n\
             evs.end_date, \n\
             evs.occurrence_id, \n\
@@ -78,11 +81,12 @@ function getObjectById(connect, id, personId) {
 }
 
 function list(connect,  candidateId, vacancyId, personId) {
-    var Connection = OpenCodeLib('./connection2.js');
-    DropFormsCache('./connection2.js');
-
-    var Settings = OpenCodeLib('./settings.js');
+    DropFormsCache('./connection.js');
+    var Connection = OpenCodeLib('./connection.js');
+    
     DropFormsCache('./settings.js');
+    var Settings = OpenCodeLib('./settings.js');
+    
 
     var settings = Settings.get();
     var commentType = settings.comment_type_id;
@@ -95,6 +99,7 @@ function list(connect,  candidateId, vacancyId, personId) {
             cast(evs.candidate_id as varchar(20)) candidate_id, \n\
             evs.[type_id], \n\
             ets.name [type_name], \n\
+            ets.text_color, \n\
             evs.date, \n\
             evs.end_date, \n\
             evs.occurrence_id, \n\
